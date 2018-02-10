@@ -3,10 +3,15 @@ import java.util.ArrayList;
 public class ANN {
     ArrayList<Layer> layers = new ArrayList<>();
 
+    // Constructor for a fully size customizable network
     ANN() {
-        // TO-DO: Find en bedre metode til at have en helt tom construtor.
+        // TO-DO: Find a better solution for an emptyy constructor.
+
+        // Idea: Maybe change this, so it still requires inputs & output neurons to be defined
+        // Would probably require changes in the addLayer function and more.
     }
 
+    // Constructor for a homogeneous network
     ANN(int inputs, int outputs, int hiddenLayers, int hiddenNeurons) {
         Layer currentLayer, nextLayer;
 
@@ -18,16 +23,16 @@ public class ANN {
         }
 
         this.addLayer(outputs);
-
     }
 
+    // Method to add a layer to an already existing network
     boolean addLayer(int nodes) {
-        boolean addSucces, connectSucces = false;
+        boolean addSuccess, connectSucces = false;
         int totalLayers;
         Layer currentLayer, pastLayer;
 
         // Add layer
-        addSucces = this.layers.add(new Layer(nodes));
+        addSuccess = this.layers.add(new Layer(nodes));
 
         // Connect layers
         totalLayers = this.layers.size();
@@ -42,13 +47,16 @@ public class ANN {
             connectSucces = true;
         }
 
-        return addSucces && connectSucces;
+        // Returns true if the layer was connected
+        return addSuccess && connectSucces;
     }
 
+    // Method to evaluate inputs and return the output / predictions
     double[] evaluateInputs(double[] inputs) {
         int totalLayers = layers.size();
         double[] output;
 
+        // In case the input size does not fit the input layer size.
         if (inputs.length != layers.get(0).nodes.size()) {
             throw new IllegalArgumentException("The input size, is not equal to the input layer size: " + inputs.length + " vs. " + layers.get(0).nodes.size());
         }

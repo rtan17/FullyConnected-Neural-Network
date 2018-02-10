@@ -11,7 +11,7 @@ public class Main {
         outputs = network.evaluateInputs(inputs);
 
         for (int i = 0; i < network.layers.get(totalLayers-1).nodes.size(); i++){
-            System.out.println(outputs[i] + " ");
+            System.out.println(outputs[i]);
         }
     }
 }
