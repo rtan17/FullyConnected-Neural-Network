@@ -27,7 +27,7 @@ class TrainerTest {
 
             data[0] = new TrainingData(inputs, outputs);
 
-            trainer.train(data, 0.5);
+            trainer.train(data, 0.5,1);
         });
     }
 
@@ -43,7 +43,7 @@ class TrainerTest {
 
             data[0] = new TrainingData(inputs, outputs);
 
-            trainer.train(data, 0.5);
+            trainer.train(data, 0.5,1);
         });
     }
 
@@ -67,7 +67,7 @@ class TrainerTest {
         double[] outputs = {1};
         data[0] = new TrainingData(inputs, outputs);
 
-        trainer.train(data, 0.5);
+        trainer.train(data, 0.5,1);
 
         double sigmoidOutput = sigmoid(0.5);
         double expectedOutput = 0.5 - 0.5 * (sigmoidOutput - 1) * sigmoidPrime(sigmoidOutput) * (1);
@@ -90,7 +90,7 @@ class TrainerTest {
         double[] outputs = {1,1};
         data[0] = new TrainingData(inputs, outputs);
 
-        trainer.train(data, 0.5);
+        trainer.train(data, 0.5,1);
 
         double sigmoidOutput = sigmoid(0.5);
         double expectedOutput = 0.5 - 0.5 * (sigmoidOutput - 1) * sigmoidPrime(sigmoidOutput) * (1);
@@ -114,7 +114,7 @@ class TrainerTest {
         double[] outputs = {1};
         data[0] = new TrainingData(inputs, outputs);
 
-        trainer.train(data, 0.5);
+        trainer.train(data, 0.5,1);
 
         double sigmoidOutput = sigmoid(1);
         double expectedOutput = 0.5 - 0.5 * (sigmoidOutput - 1) * sigmoidPrime(sigmoidOutput) * (1);
@@ -139,7 +139,7 @@ class TrainerTest {
         double[] outputs = {1};
         data[0] = new TrainingData(inputs, outputs);
 
-        trainer.train(data, 0.5);
+        trainer.train(data, 0.5,1);
 
         // W1
         double w1SigmoidOutput = sigmoid(sigmoid(0.5)*0.5);
@@ -147,7 +147,6 @@ class TrainerTest {
         double w1ExpectedOutput = 0.5 - 0.5 * w1D;
 
         // W2
-        double w2SigmoidOutput = sigmoid(sigmoid(0.5));
         double w2D = 1 * sigmoidPrime(sigmoid(0.5)) * 0.5 * sigmoidPrime(sigmoid(0.5 * sigmoid(0.5))) * (w1SigmoidOutput - 1);
         double w2ExpectedOutput = 0.5 - 0.5 * w2D;
 
@@ -168,7 +167,7 @@ class TrainerTest {
         double[] outputs = {1};
         data[0] = new TrainingData(inputs, outputs);
 
-        trainer.train(data, 0.5);
+        trainer.train(data, 0.5,1);
 
         double expected = sigmoid(0.5) - outputs[0];
 
@@ -189,7 +188,7 @@ class TrainerTest {
         double[] outputs = {1};
         data[0] = new TrainingData(inputs, outputs);
 
-        trainer.train(data, 0.5);
+        trainer.train(data, 0.5,1);
 
         double output = sigmoid(sigmoid(0.5)*0.5);
 
