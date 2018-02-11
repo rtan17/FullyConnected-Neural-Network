@@ -3,6 +3,7 @@ import java.util.Random;
 public class Weight {
     Node startNode;
     double weight;
+    double updateValue; // Used to store a temporary new weight - Maybe another solution is needed
 
     // Constructor if you want a random weight value.
     Weight(Node startNode){
@@ -16,5 +17,9 @@ public class Weight {
     Weight(Node startNode, double weight){
         this(startNode);
         this.weight = weight;
+    }
+
+    void updateWeight(){
+        this.weight = this.updateValue;
     }
 }

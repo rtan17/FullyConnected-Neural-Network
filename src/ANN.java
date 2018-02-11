@@ -5,7 +5,7 @@ public class ANN {
 
     // Constructor for a fully size customizable network
     ANN() {
-        // TO-DO: Find a better solution for an emptyy constructor.
+        // TO-DO: Find a better solution for an empty constructor.
 
         // Idea: Maybe change this, so it still requires inputs & output neurons to be defined
         // Would probably require changes in the addLayer function and more.

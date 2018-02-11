@@ -3,8 +3,8 @@ import java.util.ArrayList;
 public class Layer {
     ArrayList<Node> nodes;
 
-    Layer(int totalNodes)throws IllegalArgumentException {
-        // A layer needs at least 1 neuron to work.
+    Layer(int totalNodes) throws IllegalArgumentException {
+        // A layer needs at least 1 node to work.
         if (totalNodes <= 0){
             throw new IllegalArgumentException("A layer cannot contain 0 or less nodes");
         }
