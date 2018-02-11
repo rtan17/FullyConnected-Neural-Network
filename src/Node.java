@@ -4,6 +4,10 @@ public class Node {
     double value;
     ArrayList<Weight> weights = new ArrayList<>();
 
+    // Used for training, to store this nodes effect on all future layers and output.
+    // Maybe another method for this should be found. Most likely in the Trainer class.
+    double effect;
+
     // Appends a weight to a node.
     boolean appendWeight(Weight w){
         return this.weights.add(w);
