@@ -49,6 +49,27 @@ neuralNetwork.addLayer(Neurons..);  // A minimum of 2 layers is required.
 neuralNetwork.addLayer(Neurons..);
 ```
 
+### How to train a neural network
+
+Methods:
+```Java
+// Returns an array of doubles containing the outputs / predictions
+void train(TrainingData[] data, double learningRate, int iterations)
+```
+
+Implementation:
+```Java
+// Initialize network and data
+ANN neuralNetwork = New ANN(inputs, outputs, hiddenLayers, neuronsPrHiddenLayer)
+double[] dataInputs = {*Input data*};
+double[] dataOutputs = {*Input data*};
+TrainingData[] data = {new TraningData(dataInputs, dataOutputs)};
+
+// Train network
+Trainer trainer = new Trainer(network);
+trainer.train(data, 0.5, 100);
+```
+
 ### How to make a prediction based on input
 
 Methods:
