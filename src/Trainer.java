@@ -21,9 +21,6 @@ public class Trainer {
         }
 
         // Backpropagation
-        double d;
-        Weight thisWeight;
-
         for (int dataID = 0; dataID < dataPoints; dataID++){
 
             // Feed forward
@@ -34,42 +31,61 @@ public class Trainer {
             // For every layer we backpropagate.
             for (int layerID = layers - 1; layerID > 0; layerID--){
 
-                // If first layer to train
+                // If last layer
                 if (layerID == layers - 1){
+                    this.backpropagateLastLayer(data, dataID, learningRate);
 
-                    int nodes = this.network.layers.get(layerID).nodes.size();
-                    for (int nodeID = 0; nodeID < nodes; nodeID++){
-
-                        int weights = this.network.layers.get(layerID).nodes.get(nodeID).weights.size();
-                        for (int weightID = 0; weightID < weights; weightID++){
-                            d = 1;
-                            d *= this.network.layers.get(layerID).nodes.get(nodeID).value - data[dataID].outputs[nodeID];
-                            d *= sigmoidPrime(this.network.layers.get(layerID).nodes.get(nodeID).value);
-                            d *= this.network.layers.get(layerID).nodes.get(nodeID).weights.get(weightID).startNode.value;
-
-                            thisWeight = this.network.layers.get(layerID).nodes.get(nodeID).weights.get(weightID);
-                            thisWeight.updateValue = thisWeight.weight - learningRate * d;
-                        }
-                    }
+                // Else
+                } else {
+                    /* Insert general function here */
                 }
             }
 
             // Update learned weights
-            for (int layerID = layers - 1; layerID > 0; layerID--){
-
-                int nodes = this.network.layers.get(layerID).nodes.size();
-                for (int nodeID = 0; nodeID < nodes; nodeID++){
-
-                    int weights = this.network.layers.get(layerID).nodes.get(nodeID).weights.size();
-                    for (int weightID = 0; weightID < weights; weightID++){
-                        this.network.layers.get(layerID).nodes.get(nodeID).weights.get(weightID).updateWeight();
-                    }
-                }
-            }
+            this.updateLearnedWeights();
         }
 
 
 
+    }
+
+    private void backpropagateLastLayer(TrainingData[] data, int dataID, double learningRate){
+        double d;
+        Weight thisWeight;
+
+        int layerID = this.network.layers.size()-1; // ID of the last layer
+
+        // For every node in the last layer
+        int nodes = this.network.layers.get(layerID).nodes.size();
+        for (int nodeID = 0; nodeID < nodes; nodeID++){
+
+            // For every weight connected to every node
+            int weights = this.network.layers.get(layerID).nodes.get(nodeID).weights.size();
+            for (int weightID = 0; weightID < weights; weightID++){
+                d = 1;
+                d *= this.network.layers.get(layerID).nodes.get(nodeID).value - data[dataID].outputs[nodeID];
+                d *= sigmoidPrime(this.network.layers.get(layerID).nodes.get(nodeID).value);
+                d *= this.network.layers.get(layerID).nodes.get(nodeID).weights.get(weightID).startNode.value;
+
+                thisWeight = this.network.layers.get(layerID).nodes.get(nodeID).weights.get(weightID);
+                thisWeight.updateValue = thisWeight.weight - learningRate * d;
+            }
+        }
+    }
+
+    private void updateLearnedWeights(){
+        int layers = this.network.layers.size();
+        for (int layerID = layers - 1; layerID > 0; layerID--){
+
+            int nodes = this.network.layers.get(layerID).nodes.size();
+            for (int nodeID = 0; nodeID < nodes; nodeID++){
+
+                int weights = this.network.layers.get(layerID).nodes.get(nodeID).weights.size();
+                for (int weightID = 0; weightID < weights; weightID++){
+                    this.network.layers.get(layerID).nodes.get(nodeID).weights.get(weightID).updateWeight();
+                }
+            }
+        }
     }
 
     private double sigmoidPrime(double x){

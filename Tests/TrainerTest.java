@@ -54,9 +54,30 @@ class TrainerTest {
         return x * (1 - x);
     }
 
-    // 2 layers: 1 input & 2 outputs
+    // 2 layers: 1 input & 1 outputs
     @Test
     public void train03(){
+        ANN network = new ANN(1,1,0,0);
+        Weight W1 = network.layers.get(1).nodes.get(0).weights.get(0);
+        W1.weight = 0.5;
+        Trainer trainer = new Trainer(network);
+
+        TrainingData[] data = new TrainingData[1];
+        double[] inputs = {1};
+        double[] outputs = {1};
+        data[0] = new TrainingData(inputs, outputs);
+
+        trainer.train(data, 0.5);
+
+        double sigmoidOutput = sigmoid(0.5);
+        double expectedOutput = 0.5 - 0.5 * (sigmoidOutput - 1) * sigmoidPrime(sigmoidOutput) * (1);
+
+        assertEquals(expectedOutput, W1.weight);
+    }
+
+    // 2 layers: 1 input & 2 outputs
+    @Test
+    public void train04(){
         ANN network = new ANN(1,2,0,0);
         Weight W1 = network.layers.get(1).nodes.get(0).weights.get(0);
         Weight W2 = network.layers.get(1).nodes.get(1).weights.get(0);
@@ -80,7 +101,7 @@ class TrainerTest {
 
     // 2 layers: 2 input & 1 outputs
     @Test
-    public void train04(){
+    public void train05(){
         ANN network = new ANN(2,1,0,0);
         Weight W1 = network.layers.get(1).nodes.get(0).weights.get(0);
         Weight W2 = network.layers.get(1).nodes.get(0).weights.get(1);
@@ -90,6 +111,31 @@ class TrainerTest {
 
         TrainingData[] data = new TrainingData[1];
         double[] inputs = {1,1};
+        double[] outputs = {1};
+        data[0] = new TrainingData(inputs, outputs);
+
+        trainer.train(data, 0.5);
+
+        double sigmoidOutput = sigmoid(1);
+        double expectedOutput = 0.5 - 0.5 * (sigmoidOutput - 1) * sigmoidPrime(sigmoidOutput) * (1);
+
+        assertEquals(expectedOutput, W1.weight);
+        assertEquals(expectedOutput, W2.weight);
+    }
+
+    // 3 layers: 1 input & 1 hidden & 1 output
+    // Not done yet.
+    @Test
+    public void train06(){
+        ANN network = new ANN(1,1,1,1);
+        Weight W1 = network.layers.get(2).nodes.get(0).weights.get(0);
+        Weight W2 = network.layers.get(1).nodes.get(0).weights.get(0);
+        W1.weight = 0.5;
+        W2.weight = 0.5;
+        Trainer trainer = new Trainer(network);
+
+        TrainingData[] data = new TrainingData[1];
+        double[] inputs = {1};
         double[] outputs = {1};
         data[0] = new TrainingData(inputs, outputs);
 
