@@ -53,7 +53,6 @@ neuralNetwork.addLayer(Neurons..);
 
 Methods:
 ```Java
-// Returns an array of doubles containing the outputs / predictions
 void train(TrainingData[] data, double learningRate, int iterations)
 ```
 
