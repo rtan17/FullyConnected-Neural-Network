@@ -6,9 +6,9 @@ Current features:
 * A fully connected artificial neural network. (ANN)
 * Scalable size of the network.
 * Feed forward.
+* Backpropagation.
 
 Future planned implementations:
-* Backpropagation.
 * Import / export of already trained ANN.
 
 ## Getting Started
