@@ -59,13 +59,13 @@ void train(TrainingData[] data, double learningRate, int iterations)
 Implementation:
 ```Java
 // Initialize network and data
-ANN neuralNetwork = New ANN(inputs, outputs, hiddenLayers, neuronsPrHiddenLayer)
+ANN neuralNetwork = new ANN(inputs, outputs, hiddenLayers, neuronsPrHiddenLayer)
 double[] dataInputs = {*Input data*};
 double[] dataOutputs = {*Input data*};
-TrainingData[] data = {new TraningData(dataInputs, dataOutputs)};
+TrainingData[] data = {new TrainingData(dataInputs, dataOutputs)};
 
 // Train network
-Trainer trainer = new Trainer(network);
+Trainer trainer = new Trainer(neuralNetwork);
 trainer.train(data, 0.5, 100);
 ```
 
