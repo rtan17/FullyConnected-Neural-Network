@@ -6,6 +6,7 @@ public class Main {
         ANN network = new ANN(2,1,1,2);
         TrainingData[] data = new TrainingData[4];
 
+        int x;
         // Data
         double[] input1 = {0,0};
         double[] output1 = {0};
