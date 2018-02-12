@@ -49,8 +49,9 @@ class ANNTest {
     @Test
     void evaluateInputs01() {
         ANN network = new ANN(1,1,0,0);
+        network.layers.get(1).nodes.get(0).weights.get(0).weight = 1;
         double[] inputs = {0};
-        double[] expectedOutput = {0.5};
+        double[] expectedOutput = {sigmoid(1)};
 
         assertArrayEquals(expectedOutput, network.evaluateInputs(inputs));
     }
@@ -58,9 +59,11 @@ class ANNTest {
     @Test
     void evaluateInputs02() {
         ANN network = new ANN(1,1,1,1);
+        network.layers.get(1).nodes.get(0).weights.get(0).weight = 1;
+        network.layers.get(2).nodes.get(0).weights.get(0).weight = 2;
         double[] inputs = {0};
-        double x = 0.5 * network.layers.get(2).nodes.get(0).weights.get(0).weight;
-        double[] expectedOutput = {sigmoid(x)};
+        double x = sigmoid(1) * network.layers.get(2).nodes.get(0).weights.get(1).weight;
+        double[] expectedOutput = {sigmoid(x+2)};
 
         assertArrayEquals(expectedOutput, network.evaluateInputs(inputs));
     }
@@ -68,9 +71,12 @@ class ANNTest {
     @Test
     void evaluateInputs03() {
         ANN network = new ANN(2,1,1,2);
+        network.layers.get(1).nodes.get(0).weights.get(0).weight = 1;
+        network.layers.get(1).nodes.get(1).weights.get(0).weight = 2;
+        network.layers.get(2).nodes.get(0).weights.get(0).weight = 3;
         double[] inputs = {0,0};
-        double x = 0.5 * network.layers.get(2).nodes.get(0).weights.get(0).weight + 0.5 * network.layers.get(2).nodes.get(0).weights.get(1).weight;
-        double[] expectedOutput = {sigmoid(x)};
+        double x = sigmoid(1) * network.layers.get(2).nodes.get(0).weights.get(1).weight + sigmoid(2) * network.layers.get(2).nodes.get(0).weights.get(2).weight;
+        double[] expectedOutput = {sigmoid(x + 3)};
 
         assertArrayEquals(expectedOutput, network.evaluateInputs(inputs));
     }
@@ -83,6 +89,11 @@ class ANNTest {
 
             network.evaluateInputs(inputs);
         });
+    }
+
+    @Test
+    void bias01(){
+
     }
 
     private double sigmoid(double x){

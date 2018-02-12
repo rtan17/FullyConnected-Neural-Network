@@ -2,9 +2,11 @@ import java.util.ArrayList;
 
 public class ANN {
     ArrayList<Layer> layers = new ArrayList<>();
+    Node bias = new Node();
 
     // Constructor for a fully size customizable network
     ANN() {
+        this.bias.value = 1;
         // TO-DO: Find a better solution for an empty constructor.
 
         // Idea: Maybe change this, so it still requires inputs & output neurons to be defined
@@ -13,7 +15,7 @@ public class ANN {
 
     // Constructor for a homogeneous network
     ANN(int inputs, int outputs, int hiddenLayers, int hiddenNeurons) {
-        Layer currentLayer, nextLayer;
+        this();
 
         // Add layers
         this.addLayer(inputs);
@@ -27,7 +29,7 @@ public class ANN {
 
     // Method to add a layer to an already existing network
     boolean addLayer(int nodes) {
-        boolean addSuccess, connectSucces = false;
+        boolean addSuccess, connectSucces;
         int totalLayers;
         Layer currentLayer, pastLayer;
 
@@ -41,6 +43,7 @@ public class ANN {
             currentLayer = this.layers.get(totalLayers - 1);
             pastLayer = this.layers.get(totalLayers - 2);
 
+            connectBiasTo(currentLayer);
             connectSucces = pastLayer.connectTo(currentLayer);
 
         } else {
@@ -49,6 +52,14 @@ public class ANN {
 
         // Returns true if the layer was connected
         return addSuccess && connectSucces;
+    }
+
+    private void connectBiasTo(Layer layer){
+        int nodes = layer.nodes.size();
+
+        for (int nodeID = 0; nodeID < nodes; nodeID++){
+            layer.nodes.get(nodeID).appendWeight(new Weight(this.bias));
+        }
     }
 
     // Method to evaluate inputs and return the output / predictions

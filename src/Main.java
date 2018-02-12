@@ -2,8 +2,11 @@ public class Main {
 
     public static void main(String[] args) {
 
+        Node bias = new Node();
+        bias.updateNode();
+
         // Initialize network
-        ANN network = new ANN(2,1,1,2);
+        ANN network = new ANN(2,1,0,2);
         TrainingData[] data = new TrainingData[4];
 
         // Data

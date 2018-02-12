@@ -58,6 +58,7 @@ class TrainerTest {
     @Test
     public void train03(){
         ANN network = new ANN(1,1,0,0);
+
         Weight W1 = network.layers.get(1).nodes.get(0).weights.get(0);
         W1.weight = 0.5;
         Trainer trainer = new Trainer(network);
@@ -69,7 +70,7 @@ class TrainerTest {
 
         trainer.train(data, 0.5,1);
 
-        double sigmoidOutput = sigmoid(0.5);
+        double sigmoidOutput = network.layers.get(1).nodes.get(0).value;
         double expectedOutput = 0.5 - 0.5 * (sigmoidOutput - 1) * sigmoidPrime(sigmoidOutput) * (1);
 
         assertEquals(expectedOutput, W1.weight);
@@ -92,11 +93,14 @@ class TrainerTest {
 
         trainer.train(data, 0.5,1);
 
-        double sigmoidOutput = sigmoid(0.5);
-        double expectedOutput = 0.5 - 0.5 * (sigmoidOutput - 1) * sigmoidPrime(sigmoidOutput) * (1);
+        double sigmoidOutput1 = network.layers.get(1).nodes.get(0).value;
+        double expectedOutput1 = 0.5 - 0.5 * (sigmoidOutput1 - 1) * sigmoidPrime(sigmoidOutput1) * (1);
 
-        assertEquals(expectedOutput, W1.weight);
-        assertEquals(expectedOutput, W2.weight);
+        double sigmoidOutput2 = network.layers.get(1).nodes.get(1).value;
+        double expectedOutput2 = 0.5 - 0.5 * (sigmoidOutput2 - 1) * sigmoidPrime(sigmoidOutput2) * (1);
+
+        assertEquals(expectedOutput1, W1.weight);
+        assertEquals(expectedOutput2, W2.weight);
     }
 
     // 2 layers: 2 input & 1 outputs
@@ -116,7 +120,7 @@ class TrainerTest {
 
         trainer.train(data, 0.5,1);
 
-        double sigmoidOutput = sigmoid(1);
+        double sigmoidOutput = network.layers.get(1).nodes.get(0).value;
         double expectedOutput = 0.5 - 0.5 * (sigmoidOutput - 1) * sigmoidPrime(sigmoidOutput) * (1);
 
         assertEquals(expectedOutput, W1.weight);
@@ -124,12 +128,11 @@ class TrainerTest {
     }
 
     // 3 layers: 1 input & 1 hidden & 1 output
-    // Not done yet.
     @Test
     public void train06(){
         ANN network = new ANN(1,1,1,1);
-        Weight W1 = network.layers.get(2).nodes.get(0).weights.get(0);
-        Weight W2 = network.layers.get(1).nodes.get(0).weights.get(0);
+        Weight W1 = network.layers.get(2).nodes.get(0).weights.get(1);
+        Weight W2 = network.layers.get(1).nodes.get(0).weights.get(1);
         W1.weight = 0.5;
         W2.weight = 0.5;
         Trainer trainer = new Trainer(network);
@@ -142,12 +145,12 @@ class TrainerTest {
         trainer.train(data, 0.5,1);
 
         // W1
-        double w1SigmoidOutput = sigmoid(sigmoid(0.5)*0.5);
-        double w1D = (w1SigmoidOutput - 1) * sigmoidPrime(w1SigmoidOutput) * (sigmoid(0.5));
+        double w1SigmoidOutput = network.layers.get(2).nodes.get(0).value;
+        double w1D = (w1SigmoidOutput - 1) * sigmoidPrime(w1SigmoidOutput) * (network.layers.get(1).nodes.get(0).value);
         double w1ExpectedOutput = 0.5 - 0.5 * w1D;
 
         // W2
-        double w2D = 1 * sigmoidPrime(sigmoid(0.5)) * 0.5 * sigmoidPrime(sigmoid(0.5 * sigmoid(0.5))) * (w1SigmoidOutput - 1);
+        double w2D = network.layers.get(0).nodes.get(0).value * sigmoidPrime(network.layers.get(1).nodes.get(0).value) * network.layers.get(1).nodes.get(0).effect;
         double w2ExpectedOutput = 0.5 - 0.5 * w2D;
 
         assertEquals(w1ExpectedOutput, W1.weight);
@@ -169,7 +172,7 @@ class TrainerTest {
 
         trainer.train(data, 0.5,1);
 
-        double expected = sigmoid(0.5) - outputs[0];
+        double expected = network.layers.get(1).nodes.get(0).value - outputs[0];
 
         assertEquals(expected, outputNode.effect);
     }
@@ -177,8 +180,8 @@ class TrainerTest {
     @Test
     public void effect02(){
         ANN network = new ANN(1,1,1,1);
-        network.layers.get(2).nodes.get(0).weights.get(0).weight = 0.5;
-        network.layers.get(1).nodes.get(0).weights.get(0).weight = 0.5;
+        network.layers.get(2).nodes.get(0).weights.get(1).weight = 0.5;
+        network.layers.get(1).nodes.get(0).weights.get(1).weight = 0.5;
         Trainer trainer = new Trainer(network);
         Node outputNode = network.layers.get(2).nodes.get(0);
         Node hiddenNode = network.layers.get(1).nodes.get(0);
@@ -190,7 +193,7 @@ class TrainerTest {
 
         trainer.train(data, 0.5,1);
 
-        double output = sigmoid(sigmoid(0.5)*0.5);
+        double output = network.layers.get(2).nodes.get(0).value;
 
         double expected1 = output - outputs[0];
         double expected2 = 0.5 * sigmoidPrime(output) * expected1;
